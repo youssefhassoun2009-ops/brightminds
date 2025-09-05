@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <title>نموذج فضائي - تسجيل دخول</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* إعدادات أساسية للصفحة */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      overflow: hidden;
+      direction: rtl;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    /* صندوق تسجيل الدخول */
+    .login-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(30, 30, 60, 0.85);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #6f00ff;
+      width: 350px;
+      text-align: center;
+      color: white;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      font-size: 26px;
+      color: #a29bfe;
+    }
+
+    .login-box input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #6f00ff;
+    }
+
+    .login-box button {
+      padding: 12px 25px;
+      background: linear-gradient(to right, #6f00ff, #a29bfe);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-box button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #6f00ff;
+    }
+
+    /* دائرة تحميل */
+    .loader {
+      display: none;
+      margin: 20px auto;
+      border: 6px solid #333;
+      border-top: 6px solid #a29bfe;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* رسالة الخطأ أو التنبيه */
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      display: none;
+      color: #00ff88;
+    }
+
+    /* شاشة النجاح */
+    #successOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle, #00ff88 0%, #000 100%);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .success-message {
+      font-size: 48px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 0 0 20px #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <!-- خلفية فضائية -->
+  <canvas id="spaceCanvas"></canvas>
+
+  <!-- نموذج تسجيل الدخول -->
+  <div class="login-box">
+    <h2>🚀 تسجيل دخول فضائي</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="اسم المستخدم" />
+      <input type="password" id="password" placeholder="كلمة المرور" />
+      <button type="submit">دخول</button>
+    </form>
+
+    <div class="loader" id="loader"></div>
+    <div class="message" id="message"></div>
+  </div>
+
+  <!-- شاشة النجاح -->
+  <div id="successOverlay">
+    <div class="success-message">✅ تم تسجيل الدخول بنجاح</div>
+  </div>
+
+  <script>
+    // عناصر النموذج
+    const form = document.getElementById("loginForm");
+    const loader = document.getElementById("loader");
+    const message = document.getElementById("message");
+    const successOverlay = document.getElementById("successOverlay");
+
+    // عند الضغط على زر الدخول
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      message.style.display = "none";
+
+      // التحقق من اسم المستخدم
+      if (username === "") {
+        message.textContent = "⚠️ يرجى إدخال اسم المستخدم";
+        message.style.color = "#ffcc00";
+        message.style.display = "block";
+        return;
+      }
+
+      // التحقق من كلمة المرور
+      if (password === "") {
+        message.textContent = "⚠️ يرجى إدخال كلمة المرور";
+        message.style.color = "#ffcc00";
+        message.style.display = "block";
+        return;
+      }
+
+      // التحقق من طول كلمة المرور
+      if (password.length < 6) {
+        message.textContent = "⚠️ كلمة المرور يجب أن تكون 6 أحرف على الأقل";
+        message.style.color = "#ffcc00";
+        message.style.display = "block";
+        return;
+      }
+
+      // عرض اللودر
+      loader.style.display = "block";
+
+      // محاكاة عملية تسجيل الدخول
+      setTimeout(() => {
+        loader.style.display = "none";
+
+        // عرض شاشة النجاح مباشرة
+        successOverlay.style.display = "flex";
+
+        // الانتقال بعد 3 ثوانٍ
+        setTimeout(() => {
+          window.location.href = "indexl.html";
+        }, 3000);
+      }, 2000);
+    });
+
+    // خلفية النجوم المتحركة
+    const canvas = document.getElementById("spaceCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+
+    function Star() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.radius = Math.random() * 1.5;
+      this.speed = Math.random() * 0.5 + 0.2;
+    }
+
+    function createStars() {
+      for (let i = 0; i < 200; i++) {
+        stars.push(new Star());
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffffff";
+      stars.forEach((star) => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(drawStars);
+    }
+
+    createStars();
+    drawStars();
+  </script>
+</body>
+</html>
